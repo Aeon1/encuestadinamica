@@ -39,11 +39,6 @@ $(document).ready(function() {
             $("#formseccion input[name='seccion']").val($("#formseccion > #vorigina").val());
             $("#formseccion textarea[name='texto']").val('');
         });
-        // var nextTab = $('#tabs li').length+1;
-        // $('<li class="nav-item"><a href="#tab'+nextTab+'" class="nav-link" role="tab" aria-selected="true" data-toggle="tab">Seccion '+nextTab+'</a></li>').appendTo('#tabs');
-        // $('<div class="tab-pane" id="tab'+nextTab+'"></div>').appendTo('.tab-content');
-        // $('<br><button type="button" class="btn btn-info modalx" data-toggle="modal" data-target="#addQuestion" onclick="openModelQuestion('+nextTab+',)">Agregar Pregunta</button>').appendTo('#tab'+nextTab)
-        // $('#tabs a:last').tab('show');
     });
 
     $(".modificarSeccion").click(function (e) {
@@ -64,8 +59,6 @@ $(document).ready(function() {
             $("#formsecciondelete input[name='seccion']").val(s);
         });
     });
-
-
     
     $(".mostrar").on('change',function (e) {
         var e = $(this).val();
@@ -83,8 +76,8 @@ $(document).ready(function() {
                             $('#'+id+' > textarea').prop("required",true);
                         }
                     }
-                }else{
-                    if ($('#'+id).hasClass('oculto') && $('#'+id).data('nivel') ==0) {
+                }else{console.log('nivel',$('#'+id).data('nivel'));
+                    if ($('#'+id).hasClass('oculto') && $('#'+id).data('nivel') == 0) {
                         $($('#'+id)).hide("slow");
                         if($('#'+id).data('obligatorio') == 1){
                             $('#'+id+' > select').val('').removeAttr('required');
@@ -107,7 +100,7 @@ $(document).ready(function() {
             var nextElement = $(this).parent().nextUntil(".principal");
             nextElement.each(function( index ) {            
                 let id = $(this).prop('id');
-                if ($('#'+id).hasClass('oculto')) {
+                if ($('#'+id).hasClass('oculto') && $('#'+id).data('nivel') > n) {
                     $($('#'+id)).hide("slow");
                     if($('#'+id).data('obligatorio') == 1){
                         $('#'+id+' > select').val('').removeAttr('required');
@@ -122,6 +115,12 @@ $(document).ready(function() {
 
     $('#inicio').trumbowyg({
         lang: 'es',
+        btnsDef: {
+            image: {
+                dropdown: ['insertImage', 'upload'],
+                ico: 'insertImage'
+            }
+        },
         btns: [
             ['myplugin'],
             ['viewHTML'],
@@ -129,7 +128,7 @@ $(document).ready(function() {
             ['strong', 'em'],
             ['justifyLeft','justifyCenter','justifyRight','justifyFull'],
             ['superscript','subscript'],
-            ['insertImage', 'link'],
+            ['image', 'link'],
             ['historyUndo','historyRedo'],        
             ['unorderedList','orderedList'],
             ['horizontalRule'],
@@ -138,6 +137,14 @@ $(document).ready(function() {
             resizimg: {
                 minSize: 64,
                 step: 16,
+            },
+            upload: {
+                serverPath: '../../Encuesta/Image/Upload',
+                fileFieldName: 'image',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                urlPropertyName: 'filelink'
             },
             fontsize: {
                 sizeList: [
@@ -155,13 +162,19 @@ $(document).ready(function() {
 
     $('#instrucciones,#fin,#cerrada').trumbowyg({
         lang: 'es',
+        btnsDef: {
+            image: {
+                dropdown: ['insertImage', 'upload'],
+                ico: 'insertImage'
+            }
+        },
         btns: [
             ['viewHTML'],
             ['fontsize','foreColor', 'backColor'],
             ['strong', 'em'],
             ['justifyLeft','justifyCenter','justifyRight','justifyFull'],
             ['superscript','subscript'],
-            ['insertImage', 'link'],
+            ['image', 'link'],
             ['historyUndo','historyRedo'],        
             ['unorderedList','orderedList'],
             ['horizontalRule'],
@@ -170,6 +183,14 @@ $(document).ready(function() {
             resizimg: {
                 minSize: 64,
                 step: 16,
+            },
+            upload: {
+                serverPath: '../../Encuesta/Image/Upload',
+                fileFieldName: 'image',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                urlPropertyName: 'filelink'
             },
             fontsize: {
                 sizeList: [
@@ -203,10 +224,12 @@ $(document).ready(function() {
             
         });
     });
+
     var startTime,endTime = 0
     $(".bntcmp").on('mousedown',function() {
         startTime = new Date();
-    })
+    });
+
     $(".bntcmp").on('mouseup',function() {
         endTime = new Date();
         var timeDiff = endTime - startTime;
@@ -235,7 +258,8 @@ $(document).ready(function() {
                 });
             $(this).remove();
         }
-    })
+    });
+    
     $(".bntcmp").click(function (e) {
         var c = $(this).data('campo');
         var n = $(this).data('nombre');

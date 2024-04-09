@@ -87,6 +87,7 @@ Route::post('/Encuesta/Instrucciones/Guardar', [GestionController::class, 'guard
 Route::get('/Encuesta/Fin/{id}', [GestionController::class, 'encuestaFin'])->name('encuesta.fin');
 Route::post('/Encuesta/Fin/Guardar', [GestionController::class, 'guardarEncuestaFin'])->name('encuesta.fin.saveUpdate');
 Route::get('/Encuesta/Fin/Vista/Previa/{id}', [GestionController::class, 'encuestaFinVistaPrevia'])->name('encuesta.fin.vista.previa');
+Route::post('/Encuesta/Image/Upload', [GestionController::class, 'encuestaSubirImagen'])->name('encuesta.subir.imagen');
 // Pagina de encuesta cerrada
 Route::get('/Encuesta/Cerrada/{id}', [GestionController::class, 'encuestaCerrada'])->name('encuesta.Cerrada');
 Route::post('/Encuesta/Cerrada/Guardar', [GestionController::class, 'guardarEncuestaCerrada'])->name('encuesta.cerrada.saveUpdate');

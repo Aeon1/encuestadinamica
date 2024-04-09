@@ -16,8 +16,8 @@ $gmx(document).ready(function() {
         for(let x of fnx1){
             let cp = $(x).data('areas');
             if (cp) {
-                var areas = cp.split(',');                
-                if(areas.includes(vas1)){
+                var areas = cp.toString().split(',');                
+                if(!areas.includes(vas1) && !areas.includes(0)){
                     $(x).parent('.form-group').remove();
                 }
             }            
@@ -28,8 +28,8 @@ $gmx(document).ready(function() {
         for(let x of fnx1){
             let cp = $(x).data('niveles');
             if (cp) {
-                var niveles = cp.split(',');
-                if(niveles.includes(vlv1)){
+                var niveles = cp.toString().split(',');
+                if(!niveles.includes(vlv1) && !niveles.includes(0)){
                     $(x).parent('.form-group').remove();
                 }
             }            
@@ -111,7 +111,7 @@ $gmx(document).ready(function() {
             var nextElement = $(this).parent().nextUntil(".principal");
             nextElement.each(function( index ) {            
                 let id = $(this).prop('id');
-                if ($('#'+id).hasClass('oculto')) {
+                if ($('#'+id).hasClass('oculto') && $('#'+id).data('nivel') > n) {
                     $($('#'+id)).hide("slow",function () {
                         progressbar($(e).closest('form').prop('id'));
                     });
@@ -202,8 +202,8 @@ $gmx(document).ready(function() {
                             for(let x of $("#"+fnx+' .form-control')){
                                 let cp = $(x).data('areas');
                                 if (cp) {
-                                    var areas = cp.split(',');                
-                                    if(areas.includes(vas1)){
+                                    var areas = cp.toString().split(',');                
+                                    if(!areas.includes(vas1) && !areas.includes(0)){
                                         $(x).parent('.form-group').remove();
                                     }
                                 }            
@@ -214,8 +214,8 @@ $gmx(document).ready(function() {
                             for(let x of $("#"+fnx+' .form-control')){
                                 let cp = $(x).data('niveles');
                                 if (cp) {
-                                    var niveles = cp.split(',');
-                                    if(niveles.includes(vlv1)){
+                                    var niveles = cp.toString().split(',');
+                                    if(!niveles.includes(vlv1) && !niveles.includes(0)){
                                         $(x).parent('.form-group').remove();
                                     }
                                 }            

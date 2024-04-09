@@ -72,6 +72,7 @@
         <script src="{{ asset('js/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
         <script src="{{ asset('js/plugins/resizimg/trumbowyg.resizimg.min.js') }}"></script>
         <script src="{{ asset('js/plugins/boton/trumbowyg.botons.js') }}"></script>
+        <script src="{{ asset('js/plugins/upload/trumbowyg.upload.min.js') }}"></script>
         
     </body>
 </html>

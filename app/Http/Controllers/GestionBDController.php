@@ -146,7 +146,7 @@ class GestionBDController extends Controller
                         return back()->with('error','Ocurrio un error, intente de nuevo');
                     }
                 } catch (\Throwable $th) {
-                    return back()->with('error','Ocurrio un error, intente de nuevox');
+                    return back()->with('error','Ocurrio un error, intente de nuevo');
                 }                
             }else{
                 // campos del registro

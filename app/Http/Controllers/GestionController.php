@@ -820,6 +820,21 @@ class GestionController extends Controller
         return redirect("Login")->with('error','Debe iniciar sesión para acceder a la sección');
     }
 
+    public function encuestaSubirImagen(Request $request) {
+        $image = null;
+        if ($request->hasFile('image')) {
+            $randomize = rand(1111111111, 9999999999);
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $filename = $randomize . '.' . $extension;
+            $image = $request->image->storeAs('',$filename, 'img');
+            return json_encode([
+                'success'=> true, 
+                'filelink'=> asset("imagenes/$image")
+            ]);
+        }
+        
+    }
+
     // public function encuestaPruebasContexto($contexto){
     //     $comprobar = Encuesta::select('id','institucional','estatus')->where('contexto',$contexto)->firstOrFail();
     //     if (!empty($comprobar['id']) && $comprobar['estatus'] ==1 ) {

@@ -124,7 +124,7 @@
                   @if ($pregunta['asignacion'] == 0)
                     <div class="form-group principal" data-nivel="{{$pregunta['subnivel']}}">
                       <label for="{{$pregunta['name']}}">{{$pregunta['pregunta']}}</label>
-                      <input type="text" class="form-control" name="{{$pregunta['name']}}" id="{{$pregunta['name']}}" {!! !empty($pregunta['obligatorio'])?'required':'' !!}>
+                      <input type="text" class="form-control" name="{{$pregunta['name']}}" id="{{$pregunta['name']}}" {!! !empty($pregunta['obligatorio'])?'required':'' !!} data-areas ={{$pregunta['area']}} data-niveles ={{$pregunta['nivel']}}>
                     </div>
                   @else
                     <div class="form-group subp {!! in_array($pregunta['momento'],[1,2,3])?'oculto':'visible' !!}" data-momento="{{$pregunta['momento']}}" data-obligatorio="{{$pregunta['obligatorio']}}" data-nivel="{{$pregunta['subnivel']}}" id="{{App\Helpers::generate_string(15)}}">
@@ -137,7 +137,7 @@
                   @if ($pregunta['asignacion'] == 0)
                     <div class="form-group principal" data-nivel="{{$pregunta['subnivel']}}">
                       <label for="{{$pregunta['name']}}">{{$pregunta['pregunta']}}</label>
-                      <textarea name="{{$pregunta['name']}}" id="{{$pregunta['name']}}" class="form-control" {!! !empty($pregunta['obligatorio'])?'required':'' !!} data-areas ={{$pregunta['area']}}></textarea>
+                      <textarea name="{{$pregunta['name']}}" id="{{$pregunta['name']}}" class="form-control" {!! !empty($pregunta['obligatorio'])?'required':'' !!} data-areas ={{$pregunta['area']}} data-niveles ={{$pregunta['nivel']}}></textarea>
                     </div>
                   @else
                   <div class="form-group subp {!! in_array($pregunta['momento'],[1,2,3])?'oculto':'visible' !!}" data-momento="{{$pregunta['momento']}}" data-obligatorio="{{$pregunta['obligatorio']}}" data-nivel="{{$pregunta['subnivel']}}" data id="{{App\Helpers::generate_string(15)}}">

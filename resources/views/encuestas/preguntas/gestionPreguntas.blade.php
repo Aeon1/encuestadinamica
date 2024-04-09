@@ -45,7 +45,7 @@ function generate_string($input, $strength = 16) {
                         @if ($pregunta['asignacion'] == 0)
                           <div class="form-group principal" data-nivel="{{$pregunta['subnivel']}}">
                             <label for="">{{$pregunta['pregunta']}}</label><br>
-                            <button type="button" class="badge badge-pill badge-info" onclick="openModelQuestion({{$seccion['seccion']}},$pregunta['id'])">Modificar</button>
+                            <button type="button" class="badge badge-pill badge-info" onclick="openModelQuestion({{$seccion['seccion']}},{{$pregunta['id']}})">Modificar</button>
                             <button type="button" class="badge badge-pill badge-danger dltqt" data-delete="{{$pregunta['id']}}">eliminar</button>
                             <span>Áreas:</span>
                             @if ($pregunta['area'] == "0")

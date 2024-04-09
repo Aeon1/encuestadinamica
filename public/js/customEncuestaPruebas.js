@@ -16,8 +16,8 @@ $(document).ready(function() {
         for(let x of fnx1){
             let cp = $(x).data('areas');
             if (cp) {
-                var areas = cp.split(',');
-                if(areas.includes(vas1)){
+                var areas = cp.toString().split(',');
+                if(!areas.includes(vas1) && !areas.includes(0)){
                     $(x).parent('.form-group').remove();
                 }
             }
@@ -28,8 +28,8 @@ $(document).ready(function() {
         for(let x of fnx1){
             let cp = $(x).data('niveles');
             if (cp) {
-                var niveles = cp.split(',');
-                if(niveles.includes(vlv1)){
+                var niveles = cp.toString().split(',');
+                if(!niveles.includes(vlv1) && !niveles.includes(0)){
                     $(x).parent('.form-group').remove();
                 }
             }            
@@ -111,7 +111,7 @@ $(document).ready(function() {
             var nextElement = $(this).parent().nextUntil(".principal");
             nextElement.each(function( index ) {
                 let id = $(this).prop('id');
-                if ($('#'+id).hasClass('oculto')) {
+                if ($('#'+id).hasClass('oculto') && $('#'+id).data('nivel') > n) {
                     $($('#'+id)).hide("slow",function () {
                         progressbar($(e).closest('form').prop('id'));
                     });
@@ -199,8 +199,8 @@ $(document).ready(function() {
                             for(let x of $("#"+fnx+' .form-control')){
                                 let cp = $(x).data('areas');
                                 if (cp) {
-                                    var areas = cp.split(',');                
-                                    if(areas.includes(vas1)){
+                                    var areas = cp.toString().split(',');
+                                    if(!areas.includes(vas1) && !areas.includes(0)){
                                         $(x).parent('.form-group').remove();
                                     }
                                 }            
@@ -211,8 +211,8 @@ $(document).ready(function() {
                             for(let x of $("#"+fnx+' .form-control')){
                                 let cp = $(x).data('niveles');
                                 if (cp) {
-                                    var niveles = cp.split(',');
-                                    if(niveles.includes(vlv1)){
+                                    var niveles = cp.toString().split(',');
+                                    if(!niveles.includes(vlv1) && !niveles.includes(0)){
                                         $(x).parent('.form-group').remove();
                                     }
                                 }            
@@ -252,7 +252,6 @@ $(document).ready(function() {
 
 function progressbarprincipal() {
     // barra de progreso general
-    console.log('ejecutado');
     let total = 0;
     let zz = 0;
     let con = 0
@@ -264,7 +263,7 @@ function progressbarprincipal() {
         }
         total +=1;
     }
-    if (zz == 1) {console.log(con);
+    if (zz == 1) {
         $("#pbini").css('width',(100/total)*con+'%');
         $("#pbini .show").html('Avance general '+Math.round((100/total)*con)+'%');
     }
