@@ -50,7 +50,9 @@ $gmx(document).ready(function() {
                     $(`#${n}`).text(v);
                 }
                 if (e =='SELECT') {
-                    $("#"+n+" option[value="+v+"]").prop('selected', true);
+                    if(v){
+                        $("#"+n+" option[value="+v+"]").prop('selected', true);
+                    }
                     setTimeout(function() {
                         $(`#${n}`).trigger("change");
                     }, 100);
@@ -163,7 +165,10 @@ $gmx(document).ready(function() {
                     localStorage.setItem(`${APP_NAME}.${value['name']}`, value['value']);                    
                 });
                 for(let d of Object.entries(localStorage)){
-                    datos[d[0].split('.').pop()] = d[1];
+                    var dvi = d[0].split('.');
+                    if(dvi[0] == `${APP_NAME}`){;
+                        datos[dvi.pop()] = d[1].replaceAll("'", '');
+                    }                    
                 }
                 datos['_token'] =  $('meta[name="csrf-token"]').attr('content');
                 var url = "Encuesta/Guardar";

@@ -2,7 +2,7 @@
 @section('main')
 <main>
     <fieldset>
-        <legend>Gestión de catalogo de áreas</legend>
+        <legend>Gestión de cátalogo de áreas</legend>
         <a href="{{ route('registro.area') }}" class="btn btn-primary">Agregar área</a>
         <br><br>
         <table id="activas" class="table table-striped table-bordered display responsive nowrap" style="width:100%">

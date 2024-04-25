@@ -220,19 +220,26 @@ class GestionController extends Controller
                     return back()->with('error','Ocurrio un error, intente de nuevo');
                 }
             } else {
-                $check = Encuesta::create([
-                    'nombre' => $data['nombre'],
-                    'contexto' => $data['contexto']
-                ]);
-                if ($check) {
-                    $c = configuracion_encuesta::create([
-                        'hash' => sha1(microtime()),
-                        'encuesta' => $check->id
+                $re = Encuesta::where('contexto',$data['contexto'])->count();
+                if ($re <= 0) {
+                    $check = Encuesta::create([
+                        'nombre' => $data['nombre'],
+                        'contexto' => $data['contexto']
                     ]);
-                    return redirect("/Encuesta")->with('success','Encuesta creada correctamente');
-                }else {
-                    return back()->with('error','Ocurrio un error, intente de nuevo');
+                    if ($check) {
+                        $c = configuracion_encuesta::create([
+                            'hash' => sha1(microtime()),
+                            'encuesta' => $check->id
+                        ]);
+                        return redirect("/Encuesta")->with('success','Encuesta creada correctamente');
+                    }else {
+                        return back()->with('error','Ocurrio un error, intente de nuevo');
+                    }
+                }else{
+                    return back()->with('error','Ya existe el contexto "'.$data['contexto'].'", pruebe con otro');
+                    // return back()->withInput()->withErrors('Ya existe el contexto, pruebe con otro');
                 }
+                
             }
         }
         return redirect("Login")->with('error','Debe iniciar sesión para acceder a la sección');
@@ -251,7 +258,7 @@ class GestionController extends Controller
     public function gestionPreguntas($id){
         if(Auth::check()){
             $encuesta['encuesta'] = Encuesta::select('id','nombre')->where('id',$id)->firstOrFail();
-            $encuesta['preguntas'] = Pregunta::where('encuesta', $id)->orderBy('seccion','asc')->orderBy('orden','asc')->get();
+            $encuesta['preguntas'] = Pregunta::where('encuesta', $id)->orderBy('seccion','asc')->orderByRaw('CAST(orden as SIGNED INTEGER) asc')->get();
             $encuesta['secciones'] = Secciones::select('seccion','texto')->where('encuesta', $id)->orderBy('seccion','asc')->get();
             $encuesta['opciones'] = Opcion::select('pregunta','opcion')->where('encuesta',$id)->get();
             $encuesta['areas'] = Area::select('id','area')->get();
@@ -430,7 +437,7 @@ class GestionController extends Controller
             } else {
                 $orden = 0;
                 if (!empty($data['asignacion'])) {
-                    $ordenx = Pregunta::selectRaw('MAX(orden) as orden')->where('encuesta',$data['encuesta'])->where('seccion',$data['seccion'])->where('asignacion',$data['asignacion'])->firstOrFail();
+                    $ordenx = Pregunta::selectRaw('MAX(CAST(orden as SIGNED INTEGER)) as orden')->where('encuesta',$data['encuesta'])->where('seccion',$data['seccion'])->where('asignacion',$data['asignacion'])->firstOrFail();
                     if (!empty($ordenx->orden)) {
                         $p = explode('*',$ordenx->orden);
                         $orden = substr($ordenx->orden, 0, -1).(end($p)+1);
@@ -441,7 +448,7 @@ class GestionController extends Controller
                         }
                     }                    
                 }else{
-                    $ordenx = Pregunta::selectRaw('MAX(orden) as orden')->where('encuesta',$data['encuesta'])->where('seccion',$data['seccion'])->firstOrFail();
+                    $ordenx = Pregunta::selectRaw('MAX(CAST(orden as SIGNED INTEGER)) as orden')->where('encuesta',$data['encuesta'])->where('seccion',$data['seccion'])->firstOrFail();
                     if (!empty($ordenx->orden)) {
 
                         $orden = explode('*',$ordenx->orden)[0]+1;

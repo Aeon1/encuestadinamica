@@ -186,7 +186,6 @@
                                     value: ''
                                 };
                             }
-
                             // Prevent multiple submissions while uploading
                             var isUploading = false;
 
@@ -207,8 +206,10 @@
                                     var data = new FormData();
                                     data.append(trumbowyg.o.plugins.upload.fileFieldName, file);
 
+                                    // data.append('X-CSRF-Token', getCSRFTokenValue());
                                     trumbowyg.o.plugins.upload.data.map(function (cur) {
                                         data.append(cur.name, cur.value);
+
                                     });
 
                                     $.map(values, function (curr, key) {
@@ -229,7 +230,6 @@
                                                 )
                                             );
                                     }
-
                                     $.ajax({
                                         url: trumbowyg.o.plugins.upload.serverPath,
                                         headers: trumbowyg.o.plugins.upload.headers,
@@ -245,7 +245,7 @@
                                             $('.' + prefix + 'progress-bar').css('width', Math.round(e.loaded * 100 / e.total) + '%');
                                         },
 
-                                        success: function (data) {
+                                        success: function (data) {console.log(trumbowyg.o.plugins.upload.success);
                                             if (trumbowyg.o.plugins.upload.success) {
                                                 trumbowyg.o.plugins.upload.success(data, trumbowyg, $modal, values);
                                             } else {

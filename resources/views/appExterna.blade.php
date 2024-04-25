@@ -11,9 +11,10 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         {{-- <link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.bootstrap4.css"> --}}
         {{-- datatables --}}
-        <link href="https://cdn.datatables.net/2.0.2/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+        <link href="https://cdn.datatables.net/v/bs4/jq-3.7.0/jszip-3.10.1/dt-2.0.3/b-3.0.1/b-colvis-3.0.1/b-html5-3.0.1/cr-2.0.0/r-3.0.1/rg-1.5.0/rr-1.5.0/sc-2.4.1/sp-2.3.0/datatables.min.css" rel="stylesheet">
+        {{-- <link href="https://cdn.datatables.net/2.0.2/css/dataTables.bootstrap4.min.css" rel="stylesheet">
         <link href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.bootstrap4.min.css" rel="stylesheet">
-        <link href="https://cdn.datatables.net/responsive/3.0.0/css/responsive.bootstrap4.min.css" rel="stylesheet">
+        <link href="https://cdn.datatables.net/responsive/3.0.0/css/responsive.bootstrap4.min.css" rel="stylesheet"> --}}
         {{-- datatables end --}}
         <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.4.18/dist/sweetalert2.min.css" rel="stylesheet">
 
@@ -39,11 +40,12 @@
         <!-- jQuery CDN -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
-        {{-- <script type="text/javascript" src="{{ asset('js/datatables.min.js') }}"></script> --}}
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script> --}}
-        {{-- <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
-        <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap4.js"></script> --}}
+        <script type="text/javascript" src="{{ asset('js/datatables.min.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+        <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap4.js"></script>
         {{-- datatables --}}
+        {{-- <script src="https://cdn.datatables.net/v/bs4/jq-3.7.0/jszip-3.10.1/dt-2.0.3/b-3.0.1/b-colvis-3.0.1/b-html5-3.0.1/cr-2.0.0/r-3.0.1/rg-1.5.0/rr-1.5.0/sc-2.4.1/sp-2.3.0/datatables.min.js"></script> --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
@@ -54,6 +56,9 @@
         <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/responsive/3.0.0/js/dataTables.responsive.min.js"></script>
         <script src="https://cdn.datatables.net/responsive/3.0.0/js/responsive.bootstrap4.js"></script>
+        <script src="{{ asset('js/xlsx.core.min.js') }}"></script>
+        <script src="{{ asset('js/FileSaver.min.js') }}"></script>        
+        <script src="{{ asset('js/tableExport.min.js') }}"></script>
 {{-- datatables end --}}
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.18/dist/sweetalert2.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>

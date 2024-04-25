@@ -3,13 +3,16 @@ $(document).ready(function() {
     // cargar la seccion correspondiente al avance
     $('fieldset').collapse({toggle: false});
     var f = '';
+    var m = 0;
     for(let x of $(':required')){
         let cp = $(x).prop('name');
         if(localStorage.getItem(`${APP_NAME}.${cp}`) == null){
-            f = $(x).closest('fieldset').attr('id');            
+            f = $(x).closest('fieldset').attr('id');
             break;
         }
     }
+
+
     var fnx1 = $('.container .form-control');
     let vas1 = localStorage.getItem(`${APP_NAME}.areanum`);    
     if( vas1 != null){
@@ -50,7 +53,9 @@ $(document).ready(function() {
                     $(`#${n}`).text(v);
                 }
                 if (e =='SELECT') {
-                    $("#"+n+" option[value="+v+"]").prop('selected', true);
+                    if(v){
+                        $("#"+n+" option[value="+v+"]").prop('selected', true);
+                    }
                     setTimeout(function() {
                         $(`#${n}`).trigger("change");
                     }, 100);
@@ -135,8 +140,7 @@ $(document).ready(function() {
                 if(value['value']){
                     if(value['name'] == 'area'){
                         localStorage.setItem(`${APP_NAME}.areanum`, value['value']);
-                        localStorage.setItem(`${APP_NAME}.${value['name']}`, $('#area option:selected').text());
-                        
+                        localStorage.setItem(`${APP_NAME}.${value['name']}`, $('#area option:selected').text());                        
                     }else if (value['name'] == 'nivel_jerarquico') {
                         localStorage.setItem(`${APP_NAME}.nivelnum`, value['value']);
                         localStorage.setItem(`${APP_NAME}.${value['name']}`, $('#nivel_jerarquico option:selected').text());
@@ -166,8 +170,12 @@ $(document).ready(function() {
                     
                 });
                 for(let d of Object.entries(localStorage)){
-                    datos[d[0].split('.').pop()] = d[1];
+                    var dvi = d[0].split('.');
+                    if(dvi[0] == `${APP_NAME}`){;
+                        datos[dvi.pop()] = d[1].replaceAll("'", '');
+                    }                    
                 }
+                
                 datos['_token'] =  $('meta[name="csrf-token"]').attr('content');
                 var url = "Encuesta/Guardar";
                 $.post(url, datos, function(data) {

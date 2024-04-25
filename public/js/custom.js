@@ -1,29 +1,77 @@
 $(document).ready(function() {
-    $('#reporte, #simplificada').DataTable({
+    $('#reporte').DataTable({
+        ordering: true,
+        scrollX: true,
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+        },
         layout: {
             topStart: {
                 buttons: [
                     {
-                        extend: 'excel',
-                        text: 'Descargar excel',
-                        title: 'Respuestas de Encuesta',
+                        text: 'Descargar',
+                        action: function ( e, dt, node, config ) {
+                            $("#reporte").tableExport({
+                                fileName:'Reporte de encuestas',
+                                type:'xlsx',
+                                escape: false,
+                                bootstrap:true,
+                                exportDataType: 'all',
+                                refreshOptions: {
+                                    exportDataType: 'all'
+                                },                          
+                                mso: {
+                                    styles: ['background-color']
+                                }
+                            });
+                        }
                     }
-                ]
+                ],
             },
             topEnd: {
                 search: {
                     placeholder: ''
                 }
             },
-        },
-        // responsive: true,
+        }
+    });
+
+    $('#simplificadax').DataTable({
         ordering: true,
         scrollX: true,
         language: {
             url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
         },
-        
-    });
+        layout: {
+            topStart: {
+                buttons: [
+                    {
+                        text: 'Descargar',
+                        action: function ( e, dt, node, config ) {
+                            $("#simplificadax").tableExport({
+                                fileName:'Reporte de encuestas',
+                                type:'xlsx',
+                                escape: false,
+                                bootstrap:true,
+                                exportDataType: 'all',
+                                refreshOptions: {
+                                    exportDataType: 'all'
+                                },                          
+                                mso: {
+                                    styles: ['background-color']
+                                }
+                            });
+                        }
+                    }
+                ],
+            },
+            topEnd: {
+                search: {
+                    placeholder: ''
+                }
+            },
+        }
+    });    
 
     $('.js-colorlib-nav-toggle').on('click', function () {
         $('body').toggleClass('offcanvas');
@@ -41,7 +89,7 @@ $(document).ready(function() {
         });
     });
 
-    $(".modificarSeccion").click(function (e) {
+    $(".modificarSeccion").click(function (e) {console.log('modificar seccion');
         let s = $(this).data('seccion');
         let t = $(this).data('texto');
         $('#addSeccionModal').modal('show');
@@ -214,7 +262,7 @@ $(document).ready(function() {
         var d = $(this).data('delete');
         const x = $(this).parent('div');
         x.hide('slow');
-        $.get('/Encuesta/Preguntas/Eliminar/'+d,function( data ) {
+        $.get('./Eliminar/'+d,function( data ) {
             if(data == 200){
                 x.remove();
             }else{

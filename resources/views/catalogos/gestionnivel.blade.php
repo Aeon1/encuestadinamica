@@ -2,7 +2,7 @@
 @section('main')
 <main>
     <fieldset>
-        <legend>Gestión de catalogo de nivel jerárquico</legend>
+        <legend>Gestión de catálogo de nivel jerárquico</legend>
         <a href="{{ route('registro.nivel') }}" class="btn btn-primary">Agregar nivel jerárquico</a>
         <br><br>
         <table id="activas" class="table table-striped table-bordered display responsive nowrap" style="width:100%">

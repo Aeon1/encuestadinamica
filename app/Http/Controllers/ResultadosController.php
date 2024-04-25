@@ -38,50 +38,38 @@ class ResultadosController extends Controller
             $names = [];
             $ax = false;
             $nx = false;
+            $namesSimply = [];
             foreach ($r as $vr) {
                 if ($vr['name'] =='area') {
                     $ax = true;
+                    $namesSimply['header'][$vr['name']] = ['seccion' => '','id'=>'','texto'=>$vr['texto'],'tipo' =>'x'];
                 }
                 if ($vr['name'] =='nivel_jerarquico') {
                     $nx = true;
+                    $namesSimply['header'][$vr['name']] = ['seccion' => '','id'=>'','texto'=>$vr['texto'],'tipo' =>'x'];
                 }
-                $names[$vr['name']] = ['texto'=>$vr['texto'],'tipo' =>'x'];
+                $names['registro'][$vr['name']] = ['texto'=>$vr['texto'],'tipo' =>'x'];
             }
             
-            $p = Pregunta::select('id','pregunta','name','tipo')->where('encuesta',$d['encuesta'])->get();
-            // $cols=[];
+            $p = Pregunta::select('preguntas.id','preguntas.pregunta','preguntas.name','tipo','preguntas.seccion','secciones.texto')
+            ->selectRaw('secciones.id as seccion_id')
+            ->leftJoin('secciones', 'secciones.seccion','=','preguntas.seccion')->where('preguntas.encuesta',$d['encuesta'])->get();
+            $pwop = [];
             foreach ($p as $vp) {
-            //     if ($vp['tipo'] == 1){
-            //         $opt = Opcion::select('opcion')->where('encuesta',$d['encuesta'])->where('pregunta',$vp['id'])->get();
-            //         $g = [];
-            //         foreach ($opt as $o) {
-            //             array_push($g,$o['opcion']);
-            //         }
-            //         $cols[$vp['name']] = ['texto' => $vp['pregunta'],'opciones' => $g];
-            //     }
-            //     if ($vp['tipo'] == 4){
-            //         $cols[$vp['name']] = ['texto' => $vp['pregunta'],'opciones' => ['Si','No','Omitida']];
-            //     }
-                $names[$vp['name']] = ['id'=>$vp['id'],'texto'=>$vp['pregunta'],'tipo' =>$vp['tipo']];
+                if ($vp['tipo'] == 1) {
+                    $opciones = Opcion::selectRaw('GROUP_CONCAT(opcion) as opciones')->where('encuesta',$d['encuesta'])->where('pregunta',$vp['id'])->get();
+                    $options = explode(',',$opciones->toArray()[0]['opciones']);
+                    $namesSimply['header'][$vp['name']] = ['sid'=> $vp['seccion_id'],'seccion' => $vp['texto'],'id'=>$vp['id'],'texto'=>$vp['pregunta'],'tipo' =>$vp['tipo'],'opciones' =>$options ];
+                }elseif ($vp['tipo'] == 4) {
+                    $options = ['Si','No','Omitida'];
+                    $namesSimply['header'][$vp['name']] = ['sid'=> $vp['seccion_id'],'seccion' => $vp['texto'],'id'=>$vp['id'],'texto'=>$vp['pregunta'],'tipo' =>$vp['tipo'],'opciones' =>$options ];
+                }
+                $names[$vp['seccion']]['texto'] = "$vp[texto]";
+                $names[$vp['seccion']][$vp['name']] = ['id'=>$vp['id'],'texto'=>$vp['pregunta'],'tipo' =>$vp['tipo']];
             }
-            $resultado = '';
-            if ($ax && $nx) {
-                $resultado = DB::table($hash)
-                ->selectRaw('area,nivel_jerarquico,count(id) as total')
-                ->groupBy('area')->groupBy('nivel_jerarquico')
-                ->orderBy('area','asc')->get();
-            }elseif ($ax) {
-                $resultado = DB::table($hash)->selectRaw('area,count(id) as total')
-                ->groupBy('area')
-                ->orderBy('area','asc')->get();
-            }elseif ($nx) {
-                $resultado = DB::table($hash)->selectRaw('nivel_jerarquico,count(id) as total')
-                ->groupBy('nivel_jerarquico')->orderBy('nivel_jerarquico','asc')->get();
-            }
-
             $names['fecha'] = ['texto' => 'Fecha','tipo' => 'x'];
             $datos = DB::table($hash)->get();
-            return view('resultados.tabla', compact('names','datos','resultado','ax','nx'));
+            return view('resultados.tabla', compact('names','datos','ax','nx','namesSimply'));
         }
     }
 }

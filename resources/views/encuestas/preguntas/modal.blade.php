@@ -25,12 +25,12 @@
   </div>                
   <div class="form-group">
     <label for="pregunta" class="col-form-label">Pregunta:</label>
-    <textarea name="pregunta" id="pregunta" class="form-control" style="width: 100%;height: 100px;">{{!empty($p['pregunta'])?$p['pregunta']:''}}</textarea>
+    <textarea name="pregunta" id="pregunta" class="form-control" style="width: 100%;height: 100px;" required>{{!empty($p['pregunta'])?$p['pregunta']:''}}</textarea>
   </div>
   <fieldset>
     <legend>Tipo de pregunta</legend>
     <div class="custom-control custom-radio">
-      <input type="radio" id="typeQuestion1" data-option='1' name="tipo" class="custom-control-input" value="1" {{!empty($p['tipo'])?$p['tipo']==1?'checked':'':''}}>
+      <input type="radio" id="typeQuestion1" data-option='1' name="tipo" class="custom-control-input" value="1" {{!empty($p['tipo'])?$p['tipo']==1?'checked':'':''}} required>
       <label class="custom-control-label"  for="typeQuestion1">Opción multiple (personalizado)</label>
     </div>
     <fieldset class="d-none oqf" id="oq1">

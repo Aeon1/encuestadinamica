@@ -43,7 +43,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <h6>página de inicio</h6>
+                            <h6>Página de inicio</h6>
                         </td>
                         <td>
                             <a class="btn btn-link" href="{{ route('encuesta.inicio',$encuesta['id']) }}">Ver/Modificar página de inicio</a>
@@ -75,7 +75,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <h6>página de fin</h6>
+                            <h6>Página de fin</h6>
                         </td>
                         <td>
                             <a class="btn btn-link" href="{{ route('encuesta.fin',$encuesta['id']) }}">Ver/Modificar página de fin</a> 
@@ -94,7 +94,7 @@
         </div>     
     </fieldset>
     <fieldset>
-        <legend>Probar y/publicar</legend>
+        <legend>Probar y/o publicar</legend>
         <div class="row">
             <div class="col-md-6">
                 <a href="{{ route('encuesta.pruebas.contexto',$encuesta['contexto']) }}" class="btn btn-primary btn-block btn-lg" target="_blank" rel="noopener noreferrer">Probar</a>

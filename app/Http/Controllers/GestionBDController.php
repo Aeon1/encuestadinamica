@@ -49,8 +49,7 @@ class GestionBDController extends Controller
             ->leftJoin('registro_form_templates','registro_form_templates.id','=','registro_forms.tipo')
             ->where('encuesta',$comprobar['id'])
             ->get();
-            $encuesta['preguntas'] = Pregunta::where('encuesta', $comprobar['id'])->orderBy('seccion','asc')->orderBy('orden','asc')->get();
-            // $encuesta['secciones'] = Pregunta::select('seccion')->where('encuesta',$comprobar['id'])->groupBy('seccion')->orderBy('seccion','asc')->get();
+            $encuesta['preguntas'] = Pregunta::where('encuesta', $comprobar['id'])->orderBy('seccion','asc')->orderByRaw('CAST(orden as SIGNED INTEGER) asc')->get();
             $encuesta['secciones'] = Secciones::select('seccion','texto')->where('encuesta', $comprobar['id'])->orderBy('seccion','asc')->get();
             $encuesta['opciones'] = Opcion::select('pregunta','opcion')->where('encuesta',$comprobar['id'])->get();
             try {
@@ -105,7 +104,6 @@ class GestionBDController extends Controller
             // obtener los campos que contendra la tabla
             $tabla = configuracion_encuesta::select('hash','publicada')->where('encuesta',$datos['encuesta'])->firstOrFail();            
             if ($tabla->publicada == 1) {
-                try {
                     if(DB::statement("DROP TABLE $tabla->hash")){
                         // campos del registro
                         $registro = registroForm::selectRaw("registro_form_templates.name,registro_form_templates.campo")
@@ -115,7 +113,7 @@ class GestionBDController extends Controller
                         $c= 1;
                         foreach ($registro as $r) {
                             if (in_array($r['campo'],[1,3,4,6,7] )) {$campos .= "$r[name] VARCHAR(255) NULL";}
-                            if ($r['campo'] == 2) {$campo .= "$r[name] INT(3) NULL";}
+                            if ($r['campo'] == 2) {$campos .= "$r[name] INT(3) NULL";}
                             if ($r['campo'] == 5) {$campos .= "$r[name] TEXT NULL";}
                             $campos .= $n!=$c?',':'';
                             $c++;
@@ -144,10 +142,7 @@ class GestionBDController extends Controller
                         }
                     }else{
                         return back()->with('error','Ocurrio un error, intente de nuevo');
-                    }
-                } catch (\Throwable $th) {
-                    return back()->with('error','Ocurrio un error, intente de nuevo');
-                }                
+                    }            
             }else{
                 // campos del registro
                 $registro = registroForm::selectRaw("registro_form_templates.name,registro_form_templates.campo")
@@ -249,7 +244,7 @@ class GestionBDController extends Controller
                     ->leftJoin('registro_form_templates','registro_form_templates.id','=','registro_forms.tipo')
                     ->where('encuesta',$comprobar['id'])                    
                     ->get();
-                    $encuesta['preguntas'] = Pregunta::where('encuesta', $comprobar['id'])->orderBy('seccion','asc')->orderBy('orden','asc')->get();
+                    $encuesta['preguntas'] = Pregunta::where('encuesta', $comprobar['id'])->orderBy('seccion','asc')->orderByRaw('CAST(orden as SIGNED INTEGER) asc')->get();
                     // $encuesta['secciones'] = Pregunta::select('seccion')->where('encuesta',$comprobar['id'])->groupBy('seccion')->orderBy('seccion','asc')->get();
                     $encuesta['secciones'] = Secciones::select('seccion','texto')->where('encuesta', $comprobar['id'])->orderBy('seccion','asc')->get();
                     $encuesta['opciones'] = Opcion::select('pregunta','opcion')->where('encuesta',$comprobar['id'])->get();
@@ -294,7 +289,13 @@ class GestionBDController extends Controller
     public function encuestaGuardar($contexto,Request $request){
         $encuesta = Encuesta::select('id')->where('contexto',$contexto)->firstOrFail();
         $gt = configuracion_encuesta::select('hash')->where('encuesta', $encuesta->id)->firstOrFail();
+        $pr = Pregunta::where('tipo',4)->where('encuesta', $encuesta->id)->get();
         $datos = $request->all();
+        foreach ($pr as $value) {
+            if(empty($datos[$value['name']])){
+                $datos[$value['name']] = 0;
+            }
+        }
         $query = "insert into $gt->hash (". implode(', ', array_keys($datos)) .") VALUES ('". implode("','" , array_values($datos)) ."')";
         if(DB::statement($query)){
             echo json_encode(['respuesta' => 1]);
